@@ -129,7 +129,13 @@ static CDVViewController *viewControllerForRequest(NSURLRequest* request)
             // Returning YES here causes the request to come through canInitWithRequest two more times.
             // For this reason, we return NO when cmds exist.
             return !hasCmds;
-        } else if([theScheme isEqualToString:@"http"] || [theScheme isEqualToString:@"https"]){
+        }
+        // We now want to handle all http(s) connections, so that we can appropriately handle the Auth
+        // challenge responses.
+        else if([theScheme isEqualToString:@"http"] || [theScheme isEqualToString:@"https"]){
+            // We don't want to handle any requests that we are already handling. Since NSURLConnections
+            // will again be tested against this protocol, we need some way to identify requests that we
+            // have already returned a YES for.
             if([[theRequest valueForHTTPHeaderField:@"ar"] isEqualToString:@"Handled"]){
                 return NO;
             } else{
@@ -164,7 +170,9 @@ static CDVViewController *viewControllerForRequest(NSURLRequest* request)
         [[self client] URLProtocol:self didReceiveResponse:response cacheStoragePolicy:NSURLCacheStorageNotAllowed];
         [[self client] URLProtocolDidFinishLoading:self];
         return;
-    } else if(([scheme isEqualToString:@"http"] || [scheme isEqualToString:@"https"]) && [gWhitelist URLIsAllowed:url]){
+    }
+    // Test for the whitelisting here. If it's not on the list, cancel it. If it is, handle it.
+    else if(([scheme isEqualToString:@"http"] || [scheme isEqualToString:@"https"]) && [gWhitelist URLIsAllowed:url]){
         [[CDVURLConnection alloc] startWithRequest:[self request] delegate:self];
         return;
     }
@@ -190,6 +198,11 @@ static CDVViewController *viewControllerForRequest(NSURLRequest* request)
     return NO;
 }
 
+// Delegate method for CDVURLConenction class. Responsable for giving the response and data
+// back to the URL Loading System (NSURLProtocolClient).
+// @response - The response returned given by the server
+// @data     - Any data collected from the server, otherwise empty
+// @error    - Nil if no errors, otherwise contains error info
 - (void)connectionResponse:(NSURLResponse*)response data:(NSData *)data error:(NSError*)error
 {
     if(error != nil){
