@@ -44,6 +44,8 @@
 		30F5EBAB14CA26E700987760 /* CDVCommandDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 30F5EBA914CA26E700987760 /* CDVCommandDelegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		3E76876D156A90EE00EB6FA3 /* CDVLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E76876B156A90EE00EB6FA3 /* CDVLogger.m */; };
 		3E76876F156A90EE00EB6FA3 /* CDVLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 3E76876C156A90EE00EB6FA3 /* CDVLogger.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		54533941171F017400535651 /* CDVURLConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 5453393F171F017400535651 /* CDVURLConnection.m */; };
+		54533942171F017400535651 /* CDVURLConnection.h in Headers */ = {isa = PBXBuildFile; fileRef = 54533940171F017400535651 /* CDVURLConnection.h */; };
 		8852C43A14B65FD800F0E735 /* CDVViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 8852C43614B65FD800F0E735 /* CDVViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8852C43C14B65FD800F0E735 /* CDVViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8852C43714B65FD800F0E735 /* CDVViewController.m */; };
 		8887FD661090FBE7009987E8 /* CDVCamera.h in Headers */ = {isa = PBXBuildFile; fileRef = 8887FD261090FBE7009987E8 /* CDVCamera.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -127,6 +129,8 @@
 		30F5EBA914CA26E700987760 /* CDVCommandDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDVCommandDelegate.h; path = Classes/CDVCommandDelegate.h; sourceTree = "<group>"; };
 		3E76876B156A90EE00EB6FA3 /* CDVLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDVLogger.m; path = Classes/CDVLogger.m; sourceTree = "<group>"; };
 		3E76876C156A90EE00EB6FA3 /* CDVLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDVLogger.h; path = Classes/CDVLogger.h; sourceTree = "<group>"; };
+		5453393F171F017400535651 /* CDVURLConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDVURLConnection.m; path = Classes/CDVURLConnection.m; sourceTree = "<group>"; };
+		54533940171F017400535651 /* CDVURLConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDVURLConnection.h; path = Classes/CDVURLConnection.h; sourceTree = "<group>"; };
 		686357AA141002F100DF4CF2 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		686357AC141002F100DF4CF2 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		686357AE141002F100DF4CF2 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -257,6 +261,8 @@
 		888700D710922F56009987E8 /* Commands */ = {
 			isa = PBXGroup;
 			children = (
+				5453393F171F017400535651 /* CDVURLConnection.m */,
+				54533940171F017400535651 /* CDVURLConnection.h */,
 				30C5F1DD15AF9E950052A00D /* CDVDevice.h */,
 				30C5F1DE15AF9E950052A00D /* CDVDevice.m */,
 				301F2F2914F3C9CA003FE9FC /* CDV.h */,
@@ -400,6 +406,7 @@
 				F858FBC6166009A8007DA594 /* CDVConfigParser.h in Headers */,
 				30F3930B169F839700B22307 /* CDVJSON.h in Headers */,
 				EB96673B16A8970A00D86CDF /* CDVUserAgentUtil.h in Headers */,
+				54533942171F017400535651 /* CDVURLConnection.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -494,6 +501,7 @@
 				F858FBC7166009A8007DA594 /* CDVConfigParser.m in Sources */,
 				30F3930C169F839700B22307 /* CDVJSON.m in Sources */,
 				EB96673C16A8970A00D86CDF /* CDVUserAgentUtil.m in Sources */,
+				54533941171F017400535651 /* CDVURLConnection.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

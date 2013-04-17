@@ -21,6 +21,7 @@
 #import "CDVCommandQueue.h"
 #import "CDVWhitelist.h"
 #import "CDVViewController.h"
+#import "CDVURLConnection.h"
 
 @interface CDVHTTPURLResponse : NSHTTPURLResponse
 - (id)initWithUnauthorizedURL:(NSURL*)url;
@@ -104,6 +105,7 @@ static CDVViewController *viewControllerForRequest(NSURLRequest* request)
 + (BOOL)canInitWithRequest:(NSURLRequest*)theRequest
 {
     NSURL* theUrl = [theRequest URL];
+    NSString* theScheme = [theUrl scheme];
     CDVViewController* viewController = viewControllerForRequest(theRequest);
 
     if (viewController != nil) {
@@ -127,6 +129,12 @@ static CDVViewController *viewControllerForRequest(NSURLRequest* request)
             // Returning YES here causes the request to come through canInitWithRequest two more times.
             // For this reason, we return NO when cmds exist.
             return !hasCmds;
+        } else if([theScheme isEqualToString:@"http"] || [theScheme isEqualToString:@"https"]){
+            if([[theRequest valueForHTTPHeaderField:@"ar"] isEqualToString:@"Handled"]){
+                return NO;
+            } else{
+                return YES;
+            }
         }
         // we only care about http and https connections.
         // CORS takes care of http: trying to access file: URLs.
@@ -149,11 +157,15 @@ static CDVViewController *viewControllerForRequest(NSURLRequest* request)
 {
     // NSLog(@"%@ received %@ - start", self, NSStringFromSelector(_cmd));
     NSURL* url = [[self request] URL];
+    NSString* scheme = [url scheme];
 
     if ([[url path] isEqualToString:@"/!gap_exec"]) {
         CDVHTTPURLResponse* response = [[CDVHTTPURLResponse alloc] initWithBlankResponse:url];
         [[self client] URLProtocol:self didReceiveResponse:response cacheStoragePolicy:NSURLCacheStorageNotAllowed];
         [[self client] URLProtocolDidFinishLoading:self];
+        return;
+    } else if(([scheme isEqualToString:@"http"] || [scheme isEqualToString:@"https"]) && [gWhitelist URLIsAllowed:url]){
+        [[CDVURLConnection alloc] startWithRequest:[self request] delegate:self];
         return;
     }
 
@@ -178,6 +190,17 @@ static CDVViewController *viewControllerForRequest(NSURLRequest* request)
     return NO;
 }
 
+- (void)connectionResponse:(NSURLResponse*)response data:(NSData *)data error:(NSError*)error
+{
+    if(error != nil){
+        [[self client] URLProtocol:self didFailWithError:error];
+        [[self client] URLProtocolDidFinishLoading:self];
+    } else {
+        [[self client] URLProtocol:self didReceiveResponse:response cacheStoragePolicy:NSURLCacheStorageNotAllowed];
+        [[self client] URLProtocol:self didLoadData:data];
+        [[self client] URLProtocolDidFinishLoading:self];
+    }
+}
 @end
 
 @implementation CDVHTTPURLResponse
